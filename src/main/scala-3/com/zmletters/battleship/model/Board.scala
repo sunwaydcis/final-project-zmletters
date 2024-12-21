@@ -1,5 +1,7 @@
 package com.zmletters.battleship.model
 
+import scala.util.Random
+
 // Understanding Some https://www.scala-lang.org/api/3.2.2/scala/Some.html
 
 class Board(val size: Int):
@@ -12,20 +14,26 @@ class Board(val size: Int):
   def displayBoard(): Unit =
     for (row <- grid) {
       println(row.map{
-        case Some(ship) => "S"
+        case Some(ship) =>
+          if (ship.isSunk) {
+            "X"
+          } else {
+            "S"
+          }
         case None => "-"
         case _ => "-"
       }.mkString(" "))
     }
 
   // function to place ship
-  def placeShip(ship: Ship, positions: List[(Int, Int)]): Boolean =
-
+  def placeShip(ship: Ship, start: (Int, Int)): Boolean =
+    val positions = ship.calculatePositions(start)
+    println(positions)
     if (isPlacementValid(positions)) {
       positions.foreach { case(x, y) =>
         grid(x)(y) = Some(ship)
       }
-      ship.place(positions)
+      ship.position_=(positions)
       true
     } else {
       false
@@ -51,17 +59,35 @@ class Board(val size: Int):
         }
       case None => "Miss"
 
+  def randomPlaceShip(ship: Ship): Boolean =
+    val random = new Random
+    var placed = false
+
+    while (!placed) {
+      val direction = if (random.nextBoolean()) "Right" else "Down"
+      ship.direction = direction
+
+      val startX = random.nextInt(size - 1)
+      val startY = random.nextInt(size - 1)
+
+      val start = (startX, startY)
+      if (placeShip(ship, start)) {
+        placed = true
+      }
+    }
+    true
+
 object TestBoard extends App:
   val b1 = new Board(10)
   val carrier = new Carrier
   val submarine = new Submarine
+  val boat = new Boat
 
-  b1.displayBoard()
+  boat.direction = "Down"
+  submarine.direction = "Down"
 
-  b1.placeShip(carrier, List((0,0),(0,1),(0,2),(0,3),(0,4)))
-  b1.placeShip(submarine, List((1,0),(1,1),(1,2)))
-
-  b1.displayBoard()
-
-  println(b1.attack(0,1))
+  b1.placeShip(boat, (5,5))
+  b1.placeShip(carrier, (0,0))
+  //b1.placeShip(submarine, (7,5))
+  b1.randomPlaceShip(submarine)
   b1.displayBoard()
