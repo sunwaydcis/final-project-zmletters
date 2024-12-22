@@ -5,7 +5,9 @@ import javafx.fxml.FXML
 import javafx.event.ActionEvent
 import com.zmletters.battleship.model.*
 import javafx.scene.control.Button
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.GridPane
+import scala.jdk.CollectionConverters._
 
 @FXML
 class PlayerShipPlacementController:
@@ -25,24 +27,58 @@ class PlayerShipPlacementController:
       currentShip = Some(playerShips(currentShipIndex))
     }
 
+
   private def setupGrid(): Unit =
     for (x <- 0 until 10; y <- 0 until 10) {
-      var btn = new Button("") {
+      val btn = new Button("") {
         setMinWidth(50)
         setMinHeight(50)
-        setOnAction(_ => println(s"Clicked on $x $y"))
+        setOnAction(_ =>
+          println(s"Clicked on $x $y") // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
+          handleGridClick(x, y)
+        )
       }
       placementGrid.add(btn, y, x) // GridPane uses column, row indexing
     }
 
-  // this function comes from chatgpt. because i dont know how to do it.
-  // function to get button position for ship position
-//  def getButtonAt(x: Int, y: Int): Button =
-//    placementGrid.getChildren
+  // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
+  def getButtonAt(x: Int, y: Int): Button =
+    val buttonOpt = placementGrid.getChildren
+      .filtered(_.isInstanceOf[Button])
+      .asScala  // Convert to Scala collection
+      .map(_.asInstanceOf[Button])  // Now you can use map
+      .find(btn => GridPane.getColumnIndex(btn) == y && GridPane.getRowIndex(btn) == x)
 
+    buttonOpt.getOrElse(throw new NoSuchElementException("Button not found"))
+
+
+  private def handleGridClick(x: Int, y: Int): Unit =
+    if (currentShip.isDefined) {
+      val ship = currentShip.get
+      println(ship)
+      val start = (x, y)
+
+      ship.direction = currentDirection
+      val positions = ship.calculatePositions(start)
+
+      if (playerBoard.isPlacementValid(positions)) {
+        playerBoard.placeShip(ship, start)
+
+        positions.foreach { case (px, py) =>
+          val btn = getButtonAt(px, py)
+          println(s"$px $py")
+          println(btn)
+          btn.setStyle("-fx-background-color: green;")
+          btn.setDisable(true)
+        }
+      }
+
+
+    }
 
   def handleAddCarrier(action: ActionEvent) =
-    println("")
+    currentShip = Some(new Carrier)
+    println("Carrier selected.")
 
   def handleStartGame(action: ActionEvent) =
     //move to next scene startgame
