@@ -1,5 +1,6 @@
 package com.zmletters.battleship
 
+import com.zmletters.battleship.controller.PlayerShipPlacementController
 import javafx.fxml.FXMLLoader
 import scalafx.application.JFXApp3
 import scalafx.scene as sfxs
@@ -54,6 +55,14 @@ object Battleship extends JFXApp3:
   def showBoard(): Unit =
     val resource = getClass.getResource("view/BoardLayout.fxml")
     val loader = new FXMLLoader(resource)
-    val boardRoot = loader.load[jfxs.layout.GridPane]
+    val boardRoot = loader.load[jfxs.layout.AnchorPane]
 
     this.roots.get.center = boardRoot
+
+  def showPlayerShipPlacement(): Unit =
+    val resource = getClass.getResource("view/PlayerShipPlacementLayout.fxml")
+    val loader = new FXMLLoader(resource)
+    val _root = loader.load[jfxs.layout.AnchorPane]
+    val control = loader.getController[PlayerShipPlacementController]
+    control.initialize()
+    this.roots.get.center = _root

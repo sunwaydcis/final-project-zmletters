@@ -52,7 +52,7 @@ class Board(val size: Int):
     }
 
   // function to check if the place is valid or has been placed before
-  private def isPlacementValid(positions: List[(Int, Int)]): Boolean =
+  def isPlacementValid(positions: List[(Int, Int)]): Boolean =
     positions.forall {
       case (x, y) =>
         x >= 0 && x < size && y >= 0 && y <= size && grid(x)(y).isEmpty

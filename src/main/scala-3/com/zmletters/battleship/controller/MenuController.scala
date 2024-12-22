@@ -7,8 +7,10 @@ import javafx.application.Platform
 
 @FXML
 class MenuController:
+
   def handleStart(action: ActionEvent) =
-    val startClicked = Battleship.showBoard()
+    val startClicked = Battleship.showPlayerShipPlacement()
+
   def handleQuit(action: ActionEvent) =
     Platform.exit()
 //    System.exit(0)
