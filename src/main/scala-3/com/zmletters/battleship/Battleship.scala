@@ -7,6 +7,8 @@ import javafx.scene as jfxs
 import scalafx.application.JFXApp3.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.Includes.*
+import scalafx.scene.layout.{GridPane, VBox}
+import scalafx.scene.control.Button
 
 object Battleship extends JFXApp3:
 
@@ -24,17 +26,34 @@ object Battleship extends JFXApp3:
       scene = new Scene():
         root = roots.get
 
-    showBoard()
+    showMenu()
+    //showBoard()
+    //generateBoard()
+
+  def generateBoard(): Unit =
+    val playerGrid = new GridPane
+    for (x <- 0 until 10; y <- 0 until 10) {
+      val btn = new Button {
+        text = "-"
+        minHeight = 40
+        minWidth = 40
+      }
+      playerGrid.add(btn, x, y)
+    }
+    val btn = playerGrid.getChildren
+    this.roots.get.center = playerGrid
+
+
+  def showMenu(): Unit =
+    val resource = getClass.getResource("view/MenuLayout.fxml")
+    val loader = new FXMLLoader(resource)
+    val menuRoot = loader.load[jfxs.layout.AnchorPane]
+
+    this.roots.get.center = menuRoot
 
   def showBoard(): Unit =
     val resource = getClass.getResource("view/BoardLayout.fxml")
     val loader = new FXMLLoader(resource)
     val boardRoot = loader.load[jfxs.layout.GridPane]
 
-    roots match {
-      case Some(root) =>
-        // Adding the GridPane (board) to the center of the BorderPane
-        root.center = boardRoot
-      case None =>
-        println("Root layout not loaded")
-    }
+    this.roots.get.center = boardRoot
