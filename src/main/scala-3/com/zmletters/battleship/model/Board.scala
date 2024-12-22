@@ -44,8 +44,10 @@ class Board(val size: Int):
         grid(x)(y) = Some(ship)
       }
       ship.position_=(positions)
+      // return true for valid position
       true
     } else {
+      // return false if it is an invalid position
       false
     }
 
@@ -84,7 +86,7 @@ class Board(val size: Int):
       // random x and y
       val startX = random.nextInt(size - 1)
       val startY = random.nextInt(size - 1)
-      
+
       // start position for the ship
       val start = (startX, startY)
       if (placeShip(ship, start)) {
