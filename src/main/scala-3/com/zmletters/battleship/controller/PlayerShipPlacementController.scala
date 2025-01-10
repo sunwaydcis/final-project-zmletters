@@ -5,10 +5,13 @@ import javafx.fxml.FXML
 import javafx.event.ActionEvent
 import com.zmletters.battleship.model.*
 import javafx.scene.control.Button
-import javafx.scene.input.MouseEvent
 import javafx.scene.layout.GridPane
-import scala.jdk.CollectionConverters._
+
+import scala.jdk.CollectionConverters.*
 import javafx.scene.Node
+import javafx.scene.control.Label
+import javafx.scene.input.KeyEvent
+import javafx.scene.layout.AnchorPane
 
 @FXML
 class PlayerShipPlacementController:
@@ -18,31 +21,60 @@ class PlayerShipPlacementController:
   val playerShips: List[Ship] = List(new Carrier, new Battleship, new Destroyer, new Submarine, new Boat)
   var currentShipIndex = 0
   var playerBoard: Board = new Board(10)
+  val buttonGrid: Array[Array[Button]] = Array.ofDim[Button](10, 10)
 
+  @FXML var placementRoot: AnchorPane = null
   @FXML var placementGrid: GridPane = null
   @FXML var carrierButton: Button = null
+  @FXML var submarineButton: Button = null
+  @FXML var destroyerButton: Button = null
+  @FXML var boatButton: Button = null
+  @FXML var dialogText: Label = null
 
   var gridDisabled: Boolean = true
 
   def initialize(): Unit =
-    setupGrid()
-    if (playerShips.nonEmpty) {
-      currentShip = Some(playerShips(currentShipIndex))
-    }
 
-
-
-  private def setupGrid(): Unit =
+    // Setting up the grid 10 x 10
     for (x <- 0 until 10; y <- 0 until 10) {
       val btn: Button = new Button("")
       btn.setMinWidth(50)
       btn.setMinHeight(50)
+
+      // Store the button in array for future use when clicked
+      buttonGrid(x)(y) = btn
+
+      // Button for action listener
       btn.setOnAction(_ => {
         println(s"Clicked on $x $y")
         handleGridClick(btn, x, y)
       })
       placementGrid.add(btn, y, x)
     }
+
+    // Add key listener if user pressed "R"
+    placementRoot.setOnKeyPressed(event => {
+      if (event.getCode.getName == "R") {
+        if (currentDirection == "Right") {
+          currentDirection = "Down"
+          dialogText.setText("Ship direction set to Vertical.")
+          println("Ship direction set to Down.")
+        } else {
+          currentDirection = "Right"
+          dialogText.setText("Ship direction set to Horizontal.")
+          println("Ship direction set to Right.")
+        }
+      }
+    })
+
+    // request focus : reference https://stackoverflow.com/questions/34654943/how-to-request-focus-on-dialog-ok-button-in-javafx
+    placementRoot.requestFocus()
+
+    // Dialog to welcome
+    dialogText.setText("Welcome to the game!")
+
+  // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
+  private def getButtonAt(row: Int, col: Int): Button = buttonGrid(row)(col)
 
   // Function to enable/disable grid clicking
   private def disableGridClicks(disable: Boolean): Unit =
@@ -51,15 +83,6 @@ class PlayerShipPlacementController:
       .foreach { btn =>
         btn.setDisable(disable)
       }
-
-  // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
-  private def getButtonAt(row: Int, col: Int): Button =
-    placementGrid.getChildren.asScala // Convert children to Scala collection
-      .collectFirst {
-        case btn: Button if GridPane.getRowIndex(btn) == row && GridPane.getColumnIndex(btn) == col => btn
-      }
-      .getOrElse(throw new NoSuchElementException(s"No button found at position ($row, $col)"))
-
 
   private def handleGridClick(btn: Button, x: Int, y: Int): Unit =
     if (currentShip.isDefined) {
@@ -90,26 +113,61 @@ class PlayerShipPlacementController:
         }
       } else {
         println("Invalid ship placement.")
+        dialogText.setText("Invalid ship placement. Please reselect the ship.")
       }
     }
     // Reset current ship
     currentShip = None
 
-
-  private def getButtonByRowCol(x: Int, y: Int): Button =
-    placementGrid.getChildren.asScala
-      .collectFirst { case btn: Button if (GridPane.getRowIndex(btn) == x && GridPane.getColumnIndex(btn) == y) => btn }
-      .orNull
+  // function to check if ship already placed
+  private def isShipTypeAlreadyPlaced(shipType: String): Boolean =
+    playerBoard.shipList.exists(_.name == shipType)
 
   def handleAddCarrier(action: ActionEvent) =
-    //disableGridClicks(false)
-    currentShip = Some(new Carrier)
-    println("Carrier selected.")
+    if (!isShipTypeAlreadyPlaced("Carrier")) {
+      currentShip = Some(new Carrier)
+      println("Carrier selected.")
+      dialogText.setText("Carrier selected.")
+//      carrierButton.setDisable(true) // Disable the button once selected
+    } else {
+      dialogText.setText("Carrier has already been placed.")
+    }
+
+  def handleAddDestroyer(action: ActionEvent) =
+    if (!isShipTypeAlreadyPlaced("Battleship")) {
+      currentShip = Some(new Destroyer)
+      println("Battleship selected.")
+      dialogText.setText("Battleship selected.")
+    } else {
+      dialogText.setText("Battleship has already been placed.")
+    }
+
 
   def handleAddBoat(action: ActionEvent) =
-    currentShip = Some(new Boat)
-    println("Boat Selected")
+    if (!isShipTypeAlreadyPlaced("Boat")) {
+      currentShip = Some(new Boat)
+      println("Boat selected.")
+      dialogText.setText("Boat selected.")
+    } else {
+      dialogText.setText("Boat has already been placed.")
+    }
 
-  def handleStartGame(action: ActionEvent) =
-    //move to next scene startgame
-    println("")
+  def handleAddSubmarine(action: ActionEvent) =
+    if (!isShipTypeAlreadyPlaced("Submarine")) {
+      currentShip = Some(new Submarine)
+      println("Submarine selected.")
+      dialogText.setText("Submarine selected.")
+    } else {
+      dialogText.setText("Submarine has already been placed.")
+    }
+
+  def handleStartGame(action: ActionEvent): Unit =
+    if (playerBoard.shipList.nonEmpty) {
+      println("List of placed ships and their positions:")
+      playerBoard.shipList.foreach { ship =>
+        val positions = ship.position // Assuming `positions` is a list of coordinates (e.g., List[(Int, Int)])
+        println(s"${ship.name}: ${positions.mkString(", ")}")
+      }
+    } else {
+      println("No ships have been placed yet.")
+    }

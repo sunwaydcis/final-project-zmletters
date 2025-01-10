@@ -63,6 +63,6 @@ object Battleship extends JFXApp3:
     val resource = getClass.getResource("view/PlayerShipPlacementLayout.fxml")
     val loader = new FXMLLoader(resource)
     val _root = loader.load[jfxs.layout.AnchorPane]
-    val control = loader.getController[PlayerShipPlacementController]
-    control.initialize()
+    val controller = loader.getController[PlayerShipPlacementController]
+    //controller.initialize()
     this.roots.get.center = _root
