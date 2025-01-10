@@ -8,6 +8,7 @@ import javafx.scene.control.Button
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.GridPane
 import scala.jdk.CollectionConverters._
+import javafx.scene.Node
 
 @FXML
 class PlayerShipPlacementController:
@@ -21,6 +22,8 @@ class PlayerShipPlacementController:
   @FXML var placementGrid: GridPane = null
   @FXML var carrierButton: Button = null
 
+  var gridDisabled: Boolean = true
+
   def initialize(): Unit =
     setupGrid()
     if (playerShips.nonEmpty) {
@@ -28,57 +31,84 @@ class PlayerShipPlacementController:
     }
 
 
+
   private def setupGrid(): Unit =
     for (x <- 0 until 10; y <- 0 until 10) {
-      val btn = new Button("") {
-        setMinWidth(50)
-        setMinHeight(50)
-        setOnAction(_ =>
-          println(s"Clicked on $x $y") // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
-          handleGridClick(x, y)
-        )
-      }
-      placementGrid.add(btn, y, x) // GridPane uses column, row indexing
+      val btn: Button = new Button("")
+      btn.setMinWidth(50)
+      btn.setMinHeight(50)
+      btn.setOnAction(_ => {
+        println(s"Clicked on $x $y")
+        handleGridClick(btn, x, y)
+      })
+      placementGrid.add(btn, y, x)
     }
 
+  // Function to enable/disable grid clicking
+  private def disableGridClicks(disable: Boolean): Unit =
+    println("Grid clicking disabled: " + disable)
+    placementGrid.getChildren.asScala.collect { case btn: Button => btn }
+      .foreach { btn =>
+        btn.setDisable(disable)
+      }
+
   // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
-  def getButtonAt(x: Int, y: Int): Button =
-    val buttonOpt = placementGrid.getChildren
-      .filtered(_.isInstanceOf[Button])
-      .asScala  // Convert to Scala collection
-      .map(_.asInstanceOf[Button])  // Now you can use map
-      .find(btn => GridPane.getColumnIndex(btn) == y && GridPane.getRowIndex(btn) == x)
-
-    buttonOpt.getOrElse(throw new NoSuchElementException("Button not found"))
+  private def getButtonAt(row: Int, col: Int): Button =
+    placementGrid.getChildren.asScala // Convert children to Scala collection
+      .collectFirst {
+        case btn: Button if GridPane.getRowIndex(btn) == row && GridPane.getColumnIndex(btn) == col => btn
+      }
+      .getOrElse(throw new NoSuchElementException(s"No button found at position ($row, $col)"))
 
 
-  private def handleGridClick(x: Int, y: Int): Unit =
+  private def handleGridClick(btn: Button, x: Int, y: Int): Unit =
     if (currentShip.isDefined) {
+      println("Ship is " + currentShip.isDefined.toString)
       val ship = currentShip.get
-      println(ship)
+      println("Placing " + ship.name + "...")
       val start = (x, y)
 
+      // Checking direction of ship
       ship.direction = currentDirection
+      println("Ship direction: " + ship.direction)
       val positions = ship.calculatePositions(start)
+      println("Positions: " + positions.toString())
 
       if (playerBoard.isPlacementValid(positions)) {
         playerBoard.placeShip(ship, start)
-
+        btn.setStyle("-fx-background-color: green")
         positions.foreach { case (px, py) =>
-          val btn = getButtonAt(px, py)
-          println(s"$px $py")
-          println(btn)
-          btn.setStyle("-fx-background-color: green;")
-          btn.setDisable(true)
+          println(s"Getting button positions... at $px, $py")
+          val btn1: Button = getButtonAt(px, py)
+          if (btn1 != null) {
+            println(s"Disable button at: $px, $py")
+            btn1.setDisable(true)
+            btn1.setStyle("-fx-background-color: green;")
+          } else {
+            println(s"Button not found at position $px, $py.")
+          }
         }
+      } else {
+        println("Invalid ship placement.")
       }
-
-
     }
+    // Reset current ship
+    currentShip = None
+
+
+  private def getButtonByRowCol(x: Int, y: Int): Button =
+    placementGrid.getChildren.asScala
+      .collectFirst { case btn: Button if (GridPane.getRowIndex(btn) == x && GridPane.getColumnIndex(btn) == y) => btn }
+      .orNull
 
   def handleAddCarrier(action: ActionEvent) =
+    //disableGridClicks(false)
     currentShip = Some(new Carrier)
     println("Carrier selected.")
+
+  def handleAddBoat(action: ActionEvent) =
+    currentShip = Some(new Boat)
+    println("Boat Selected")
 
   def handleStartGame(action: ActionEvent) =
     //move to next scene startgame
