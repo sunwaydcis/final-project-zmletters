@@ -4,7 +4,6 @@ import com.zmletters.battleship.Battleship
 import com.zmletters.battleship.game.{AIDifficulty, EasyAI, GameState, HardAI, NormalAI}
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
-import javafx.application.Platform
 
 @FXML
 class DifficultySelectionController:

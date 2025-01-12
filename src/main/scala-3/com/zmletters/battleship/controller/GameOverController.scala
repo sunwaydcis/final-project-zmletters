@@ -17,7 +17,6 @@ class GameOverController:
     GameState.gameOverText = ""
 
   def handlePlayAgain(action: ActionEvent) =
-    //val startClicked = Battleship.showPlayerShipPlacement()
     val startClicked = Battleship.showDifficultySelection()
 
   def handleMenu(actionEvent: ActionEvent) =
@@ -25,4 +24,3 @@ class GameOverController:
 
   def handleQuit(action: ActionEvent) =
     Platform.exit()
-//    System.exit(0)

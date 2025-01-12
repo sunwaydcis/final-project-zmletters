@@ -34,6 +34,7 @@ class GameplayController:
     playerBoard = GameState.playerBoard
     gameLogic = new GameLogic(playerBoard, enemyBoard, GameState.difficulty)
 
+    // set up grid for player
     setUpPlayerGrid()
 
     // Initialize enemy board
@@ -41,7 +42,7 @@ class GameplayController:
     setUpEnemyGrid()
     println(enemyBoard.shipList)
 
-
+  // function to set up board for player
   private def setUpPlayerGrid(): Unit =
     for (x <- 0 until 10; y <- 0 until 10) {
       val cell = new Label("")
@@ -61,6 +62,7 @@ class GameplayController:
       }
     }
 
+  // function to set up enemy board
   private def setUpEnemyGrid(): Unit =
     for (x <- 0 until 10; y <- 0 until 10) {
       val btn = new Button("")
@@ -77,6 +79,7 @@ class GameplayController:
       enemyGrid.add(btn, y, x)
     }
 
+  // function to generate ships for AI
   private def generateEnemyShips(): Unit =
     val random = new Random
     enemyShips.foreach { ship =>
@@ -86,7 +89,7 @@ class GameplayController:
         // Randomly select a starting position and direction
         val startX = random.nextInt(10)
         val startY = random.nextInt(10)
-        val direction = if random.nextBoolean() then "Right" else "Down"
+        val direction = if random.nextBoolean() then "Right" else "Down" // Randomize rotation
         ship.direction = direction
 
         // Calculate positions and check validity
@@ -96,6 +99,7 @@ class GameplayController:
           placed = true
     }
 
+  // function for clicking the board for the player
   private def handleGridClick(btn: Button, x: Int, y: Int): Unit =
     println(s"Player attacked enemy at $x, $y")
 
@@ -126,10 +130,8 @@ class GameplayController:
         playerDialog.setText("Well done Captain! You won!")
         GameState.gameOverText = "You win!"
         transitionNextScene()
-        //statusLabel.setText("Game Over! Player 1 wins!")
       case _ =>
         println(s"Unexpected result: $result")
-        //statusLabel.setText("Error occurred during attack.")
 
 
     // If game is not over, proceed to AI's turn
@@ -137,6 +139,7 @@ class GameplayController:
       handleAiTurn()
     }
 
+  // function to handle AI turn
   private def handleAiTurn(): Unit =
     // Pause for 1 second
     val pause = new PauseTransition(Duration.seconds(1))
@@ -171,10 +174,8 @@ class GameplayController:
           enemyDialog.setText("I guess I am the superior ones after all.")
           playerDialog.setText("You lost... Better luck next time...")
           transitionNextScene()
-        //statusLabel.setText("Game Over! AI wins!")
         case _ =>
           println(s"Unexpected result: $result")
-      //statusLabel.setText("Error occurred during AI attack.")
 
       // Enable interactions after AI finishes turn
       if (!gameLogic.isGameOver) {
@@ -183,9 +184,9 @@ class GameplayController:
       }
 
     })
-
     pause.play()
 
+  // Set up transition to game over page
   private def transitionNextScene(): Unit =
     println("Transitioning ot next scene.")
 
@@ -199,6 +200,7 @@ class GameplayController:
     })
     pause.play()
 
+  // function to disable all buttons
   private def disableAllGridButtons(): Unit =
     // Disable all buttons in the enemy grid
     buttonGrid.flatten.foreach { btn =>

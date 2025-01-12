@@ -17,7 +17,7 @@ class SettingsController:
 
   def setMediaPlayer(mediaPlayer: MediaPlayer): Unit =
     this.mediaPlayer = mediaPlayer
-    if (volumeSlider != null) {
+    if volumeSlider != null then
       volumeSlider.setValue(GameState.globalVolume * 100)
 
       // Listener for the slider to adjust volume
@@ -27,7 +27,6 @@ class SettingsController:
         this.mediaPlayer.setVolume(volume)
         println(s"Volume set to: $volume")
       })
-    }
 
   def handleDoneButton(actionEvent: ActionEvent): Unit =
     GameState.globalVolume = volumeSlider.getValue/100

@@ -43,6 +43,7 @@ class NormalAI extends AIDifficulty:
 
     (x, y, attackResult)
 
+// reference : https://www.geeksforgeeks.org/play-battleships-game-with-ai/#2-hunt-and-target-method
 class HardAI extends AIDifficulty:
   private val rand = new Random
 
@@ -92,10 +93,7 @@ class HardAI extends AIDifficulty:
 
     (x, y, attackResult)
 
-  /**
-   * Generate coordinates in a checkerboard pattern or any
-   * pattern that systematically avoids repeats, then randomly pick one.
-   */
+  // Generate coordinates in a checkerboard pattern or any pattern that systematically avoids repeats, then randomly pick one.
   private def getHuntCell(boardSize: Int): (Int, Int) =
     var nx, ny = 0
     var found = false
@@ -108,7 +106,7 @@ class HardAI extends AIDifficulty:
         found = true
     (nx, ny)
 
-  /** Add adjacent cells of a hit to the target queue. */
+  // Add adjacent cells of a hit to the target queue.
   private def addAdjacentCells(x: Int, y: Int, boardSize: Int): Unit =
     val neighbors = List((x-1, y), (x+1, y), (x, y-1), (x, y+1))
     neighbors.foreach { case (nx, ny) =>

@@ -8,14 +8,11 @@ import javafx.application.Platform
 @FXML
 class MenuController:
 
-  def handleStart(action: ActionEvent) =
-
+  def handleStart(action: ActionEvent): Unit =
     val startClicked = Battleship.showDifficultySelection()
 
-  def handleSettings(action: ActionEvent) =
-
+  def handleSettings(action: ActionEvent): Unit =
     val clicked = Battleship.showSettings()
 
-  def handleQuit(action: ActionEvent) =
-
+  def handleQuit(action: ActionEvent): Unit =
     Platform.exit()

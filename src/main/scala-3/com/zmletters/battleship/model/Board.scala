@@ -3,7 +3,6 @@ package com.zmletters.battleship.model
 import scala.util.Random
 
 // Understanding Some https://www.scala-lang.org/api/3.2.2/scala/Some.html
-
 class Board(val size: Int):
 
   // Board's grid storing in array

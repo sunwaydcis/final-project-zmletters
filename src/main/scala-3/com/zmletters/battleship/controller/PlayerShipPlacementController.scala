@@ -17,13 +17,13 @@ import javafx.scene.layout.AnchorPane
 @FXML
 class PlayerShipPlacementController:
 
-  var currentShip: Option[Ship] = None
-  var currentDirection: String = "Right"
-  val playerShips: List[Ship] = List(new Carrier, new Battleship, new Destroyer, new Submarine, new Boat)
-  var currentShipIndex = 0
-  var playerBoard: Board = new Board(10)
-  val buttonGrid: Array[Array[Button]] = Array.ofDim[Button](10, 10)
-
+  private var currentShip: Option[Ship] = None
+  private var currentDirection: String = "Right"
+  private val playerShips: List[Ship] = List(new Carrier, new Battleship, new Destroyer, new Submarine, new Boat)
+  private var currentShipIndex = 0
+  private var playerBoard: Board = new Board(10)
+  private val buttonGrid: Array[Array[Button]] = Array.ofDim[Button](10, 10)
+  private var gridDisabled: Boolean = true
   @FXML private var placementRoot: AnchorPane = null
   @FXML private var placementGrid: GridPane = null
   @FXML private var carrierButton: Button = null
@@ -34,8 +34,6 @@ class PlayerShipPlacementController:
   @FXML private var dialogText: Label = null
   @FXML private var rotationText: Label = null
   @FXML private var startGameButton: Button = null
-
-  var gridDisabled: Boolean = true
 
   def initialize(): Unit =
 
@@ -152,26 +150,24 @@ class PlayerShipPlacementController:
       case "Boat" => boatButton.setDisable(true)
       case _ => println(s"No button found for $shipName.")
 
-  def handleAddCarrier(action: ActionEvent) =
+  def handleAddCarrier(action: ActionEvent): Unit =
     if !isShipTypeAlreadyPlaced("Carrier") then
       currentShip = Some(new Carrier)
       println("Carrier selected.")
       dialogText.setText("Carrier selected. 5 Tiles.")
-//      carrierButton.setDisable(true) // Disable the button once selected
     else
       dialogText.setText("Carrier has already been placed.")
 
-  def handleAddBattleship(action: ActionEvent) =
+  def handleAddBattleship(action: ActionEvent): Unit =
     if !isShipTypeAlreadyPlaced("Battleship") then
       currentShip = Some(new Battleship)
       println("Battleship selected.")
       dialogText.setText("Battleship selected. 4 Tiles.")
-      //      carrierButton.setDisable(true) // Disable the button once selected
     else
       dialogText.setText("Battleship has already been placed.")
 
 
-  def handleAddDestroyer(action: ActionEvent) =
+  def handleAddDestroyer(action: ActionEvent): Unit =
     if !isShipTypeAlreadyPlaced("Destroyer") then
       currentShip = Some(new Destroyer)
       println("Destroyer selected.")

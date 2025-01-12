@@ -2,12 +2,10 @@ package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.Battleship.mediaPlayer
 import com.zmletters.battleship.game.GameState
-import com.zmletters.battleship.model.Battleship
+
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.stage.Stage
-import javafx.scene.control.Alert
-import javafx.scene.control.Alert.AlertType
 import javafx.scene.control.MenuItem
 import scalafx.scene.media.MediaPlayer
 

@@ -2,7 +2,6 @@ package com.zmletters.battleship.game
 
 import com.zmletters.battleship.model.Board
 
-import scala.util.Random
 
 class GameLogic(board1: Board, board2: Board, ai: AIDifficulty):
 
