@@ -1,7 +1,7 @@
 package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.Battleship
-import com.zmletters.battleship.game.{AIDifficulty, EasyAI, GameState, HardAI, NormalAI}
+import com.zmletters.battleship.game.GameState
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
 import javafx.application.Platform

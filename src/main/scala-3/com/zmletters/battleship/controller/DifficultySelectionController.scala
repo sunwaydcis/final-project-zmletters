@@ -1,16 +1,12 @@
 package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.Battleship
-import com.zmletters.battleship.game.{AIDifficulty, EasyAI, GameState, HardAI, NormalAI}
+import com.zmletters.battleship.game.{AIDifficulty, GameState, HardAI, NormalAI}
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
 
 @FXML
 class DifficultySelectionController:
-  def handleEasyAI(actionEvent: ActionEvent): Unit =
-
-    GameState.difficulty = new EasyAI
-    Battleship.showPlayerShipPlacement()
 
   def handleNormalAI(actionEvent: ActionEvent): Unit =
 

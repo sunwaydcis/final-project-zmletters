@@ -8,22 +8,6 @@ trait AIDifficulty:
   def aiAttack(playerBoard: Board): (Int, Int, String)
 
 
-class EasyAI extends AIDifficulty:
-  private val rand = new Random
-
-  def aiAttack(playerBoard: Board): (Int, Int, String) =
-    var attackResult = ""
-    var x, y = 0
-
-    // Simple random approach—if you want it to sometimes repeat hits, just keep it as is.
-    while attackResult == "" || attackResult == "Already Hit" do
-      x = rand.nextInt(playerBoard.size)
-      y = rand.nextInt(playerBoard.size)
-      attackResult = playerBoard.attack(x, y)
-
-    (x, y, attackResult)
-
-
 class NormalAI extends AIDifficulty:
   private val rand = new Random
   private val visited = scala.collection.mutable.Set[(Int, Int)]()
