@@ -55,7 +55,7 @@ class Board(val size: Int):
   def isPlacementValid(positions: List[(Int, Int)]): Boolean =
     positions.forall {
       case (x, y) =>
-        x >= 0 && x < size && y >= 0 && y <= size && grid(x)(y).isEmpty
+        x >= 0 && x < size && y >= 0 && y < size && grid(x)(y).isEmpty
     }
 
   // function to attack
@@ -98,20 +98,3 @@ class Board(val size: Int):
   def checkAllSunk: Boolean =
     shipList.forall(_.isSunk)
 
-object TestBoard extends App:
-  val b1 = new Board(10)
-  val carrier = new Carrier
-  val submarine = new Submarine
-  val boat = new Boat
-
-  boat.direction = "Down"
-  submarine.direction = "Down"
-
-  b1.placeShip(boat, (5,5))
-  b1.placeShip(carrier, (0,0))
-  //b1.placeShip(submarine, (7,5))
-  b1.randomPlaceShip(submarine)
-  b1.displayBoard()
-
-  b1.shipList.foreach(println)
-  println(b1.checkAllSunk)

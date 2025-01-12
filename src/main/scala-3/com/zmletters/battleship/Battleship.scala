@@ -1,6 +1,6 @@
 package com.zmletters.battleship
 
-import com.zmletters.battleship.controller.PlayerShipPlacementController
+import com.zmletters.battleship.controller.{GameplayController, PlayerShipPlacementController}
 import javafx.fxml.FXMLLoader
 import scalafx.application.JFXApp3
 import scalafx.scene as sfxs
@@ -24,6 +24,7 @@ object Battleship extends JFXApp3:
 
     stage = new PrimaryStage():
       title = "Battleship"
+      resizable = false
       scene = new Scene():
         root = roots.get
 
@@ -52,6 +53,13 @@ object Battleship extends JFXApp3:
 
     this.roots.get.center = menuRoot
 
+  def showDifficultySelection(): Unit =
+    val resource = getClass.getResource("view/DifficultySelectionLayout.fxml")
+    val loader = new FXMLLoader(resource)
+    val _root = loader.load[jfxs.layout.AnchorPane]
+
+    this.roots.get.center = _root
+
   def showBoard(): Unit =
     val resource = getClass.getResource("view/BoardLayout.fxml")
     val loader = new FXMLLoader(resource)
@@ -65,4 +73,11 @@ object Battleship extends JFXApp3:
     val _root = loader.load[jfxs.layout.AnchorPane]
     val controller = loader.getController[PlayerShipPlacementController]
     //controller.initialize()
+    this.roots.get.center = _root
+
+  def showGameplay(): Unit =
+    val resource = getClass.getResource("view/GameplayLayout.fxml")
+    val loader = new FXMLLoader(resource)
+    val _root = loader.load[jfxs.layout.AnchorPane]
+    val controller = loader.getController[GameplayController]
     this.roots.get.center = _root

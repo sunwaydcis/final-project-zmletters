@@ -1,0 +1,17 @@
+.play {
+    -fx-background-image: url("../img/Buttons/BTN_BLUE_RECT_IN.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.quit-btn {
+    -fx-background-image: url("../img/Buttons/BTN_GRAY_RECT_IN.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}

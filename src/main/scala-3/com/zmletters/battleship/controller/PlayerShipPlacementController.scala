@@ -1,6 +1,7 @@
 package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.game.GameState
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
 import com.zmletters.battleship.model.*
@@ -23,13 +24,13 @@ class PlayerShipPlacementController:
   var playerBoard: Board = new Board(10)
   val buttonGrid: Array[Array[Button]] = Array.ofDim[Button](10, 10)
 
-  @FXML var placementRoot: AnchorPane = null
-  @FXML var placementGrid: GridPane = null
-  @FXML var carrierButton: Button = null
-  @FXML var submarineButton: Button = null
-  @FXML var destroyerButton: Button = null
-  @FXML var boatButton: Button = null
-  @FXML var dialogText: Label = null
+  @FXML private var placementRoot: AnchorPane = null
+  @FXML private var placementGrid: GridPane = null
+  @FXML private var carrierButton: Button = null
+  @FXML private var submarineButton: Button = null
+  @FXML private var destroyerButton: Button = null
+  @FXML private var boatButton: Button = null
+  @FXML private var dialogText: Label = null
 
   var gridDisabled: Boolean = true
 
@@ -54,17 +55,16 @@ class PlayerShipPlacementController:
 
     // Add key listener if user pressed "R"
     placementRoot.setOnKeyPressed(event => {
-      if (event.getCode.getName == "R") {
-        if (currentDirection == "Right") {
+      if event.getCode.getName == "R" then
+        if currentDirection == "Right" then
           currentDirection = "Down"
           dialogText.setText("Ship direction set to Vertical.")
           println("Ship direction set to Down.")
-        } else {
+        else
           currentDirection = "Right"
           dialogText.setText("Ship direction set to Horizontal.")
           println("Ship direction set to Right.")
-        }
-      }
+
     })
 
     // request focus : reference https://stackoverflow.com/questions/34654943/how-to-request-focus-on-dialog-ok-button-in-javafx
@@ -134,12 +134,12 @@ class PlayerShipPlacementController:
     }
 
   def handleAddDestroyer(action: ActionEvent) =
-    if (!isShipTypeAlreadyPlaced("Battleship")) {
+    if (!isShipTypeAlreadyPlaced("Destroyer")) {
       currentShip = Some(new Destroyer)
-      println("Battleship selected.")
-      dialogText.setText("Battleship selected.")
+      println("Destroyer selected.")
+      dialogText.setText("Destroyer selected.")
     } else {
-      dialogText.setText("Battleship has already been placed.")
+      dialogText.setText("Destroyer has already been placed.")
     }
 
 
@@ -165,9 +165,16 @@ class PlayerShipPlacementController:
     if (playerBoard.shipList.nonEmpty) {
       println("List of placed ships and their positions:")
       playerBoard.shipList.foreach { ship =>
-        val positions = ship.position // Assuming `positions` is a list of coordinates (e.g., List[(Int, Int)])
+        val positions = ship.position
         println(s"${ship.name}: ${positions.mkString(", ")}")
       }
+
+      // Store the playerBoard in GameState
+      GameState.playerBoard = playerBoard
+      //GameState.currentPlayer = "You"
+      // Transition to the next scene
+      Battleship.showGameplay()
     } else {
       println("No ships have been placed yet.")
+      dialogText.setText("Please place all ships before starting the game.")
     }

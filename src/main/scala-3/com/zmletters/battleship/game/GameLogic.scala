@@ -1,10 +1,10 @@
-package com.zmletters.battleship.controller
+package com.zmletters.battleship.game
 
 import com.zmletters.battleship.model.Board
 
 import scala.util.Random
 
-class GameController(board1: Board, board2: Board):
+class GameLogic(board1: Board, board2: Board, ai: AIDifficulty):
 
   private var currentPlayer: String = "Player"
 
@@ -18,21 +18,13 @@ class GameController(board1: Board, board2: Board):
     }
 
   def aiAttack: (Int, Int, String) =
-    val random = new Random
-    var attackResult = ""
-    var x, y = 0
 
-    while
-      attackResult == "Already Hit"
-    do
-      x = random.nextInt(board1.size)
-      y = random.nextInt(board1.size)
-      attackResult = board1.attack(x, y)
+    val (x, y, attackResult) = ai.aiAttack(board1)
 
     if (board1.checkAllSunk) {
-      (x, y, "Player 2 wins!")
+      (x, y, "Enemy wins!")
     } else {
-      currentPlayer = "Player 1"
+      currentPlayer = "Player"
       (x, y, attackResult)
     }
 
