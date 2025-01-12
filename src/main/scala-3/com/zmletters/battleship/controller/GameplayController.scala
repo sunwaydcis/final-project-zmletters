@@ -2,7 +2,7 @@ package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.game.*
 import com.zmletters.battleship.model.*
-import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.BattleshipGame
 import javafx.animation.PauseTransition
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, Label}
@@ -196,7 +196,7 @@ class GameplayController:
     val pause = new PauseTransition(Duration.seconds(2))
     pause.setOnFinished(_ => {
       // Call your scene transition method here
-      Battleship.showGameOver()
+      BattleshipGame.showGameOver()
     })
     pause.play()
 
@@ -213,4 +213,4 @@ class GameplayController:
     }
 
   def handleBackButton(actionEvent: ActionEvent): Unit =
-    val backClicked = Battleship.showDifficultySelection()
+    val backClicked = BattleshipGame.showDifficultySelection()

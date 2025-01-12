@@ -1,0 +1,118 @@
+@startuml
+package model {
+    class Ship {
+        +name: String
+        +size: Int
+        +position: List[(Int, Int)]
+        +health: Int
+        +direction: String
+        +isPlaced: Boolean
+        +calculatePositions(start: (Int, Int)): List[(Int, Int)]
+        +takeHit(target: (Int, Int)): Boolean
+        +isSunk: Boolean
+    }
+    class Carrier extends Ship
+    class Battleship extends Ship
+    class Destroyer extends Ship
+    class Submarine extends Ship
+    class Boat extends Ship
+
+    class Board {
+        +size: Int
+        +shipList: List[Ship]
+        +placeShip(ship: Ship, start: (Int, Int)): Boolean
+        +isPlacementValid(positions: List[(Int, Int)]): Boolean
+        +attack(x: Int, y: Int): String
+        +randomPlaceShip(ship: Ship): Boolean
+        +checkAllSunk: Boolean
+        +displayBoard(): Unit
+    }
+}
+
+Ship <|-- Carrier
+Ship <|-- Battleship
+Ship <|-- Destroyer
+Ship <|-- Submarine
+Ship <|-- Boat
+
+package game {
+    class AIDifficulty {
+        +aiAttack(playerBoard: Board): (Int, Int, String)
+    }
+    class NormalAI
+    class HardAI
+    class GameLogic {
+        +playerAttack(x: Int, y: Int): String
+        +aiAttack: (Int, Int, String)
+        +isGameOver: Boolean
+        +board1Sunk: Boolean
+        +board2Sunk: Boolean
+    }
+    class GameState {
+        +globalVolume: Double
+        +difficulty: AIDifficulty
+        +playerBoard: Board
+        +opponentBoard: Board
+    }
+}
+
+AIDifficulty <|-- NormalAI
+AIDifficulty <|-- HardAI
+GameLogic --> Board
+GameLogic --> AIDifficulty
+GameState --> Board
+GameState --> AIDifficulty
+
+package controller {
+    class MenuBarController {
+        +handleQuitMenuItem(event: ActionEvent)
+        +handleMute(event: ActionEvent)
+    }
+    class DifficultySelectionController {
+        +handleNormalAI(actionEvent: ActionEvent)
+        +handleHardAI(actionEvent: ActionEvent)
+        +handleBackButton(actionEvent: ActionEvent)
+    }
+    class GameplayController {
+        +initialize()
+        +handleGridClick(btn: Button, x: Int, y: Int)
+        +handleAiTurn()
+        +transitionNextScene()
+    }
+    class GameOverController {
+        +initialize()
+        +handlePlayAgain(action: ActionEvent)
+        +handleMenu(actionEvent: ActionEvent)
+        +handleQuit(action: ActionEvent)
+    }
+    class MenuController {
+        +handleStart(action: ActionEvent)
+        +handleSettings(action: ActionEvent)
+        +handleQuit(action: ActionEvent)
+    }
+    class PlayerShipPlacementController {
+        +initialize()
+        +handleGridClick(btn: Button, x: Int, y: Int)
+        +handleStartGame(action: ActionEvent)
+        +handleBackButton(actionEvent: ActionEvent)
+    }
+    class SettingsController {
+        +setMediaPlayer(mediaPlayer: MediaPlayer)
+        +handleDoneButton(actionEvent: ActionEvent)
+        +handleBackButton(actionEvent: ActionEvent)
+    }
+}
+
+BattleshipGame --> MenuBarController
+BattleshipGame --> GameplayController
+BattleshipGame --> GameOverController
+BattleshipGame --> MenuController
+BattleshipGame --> PlayerShipPlacementController
+BattleshipGame --> SettingsController
+BattleshipGame --> DifficultySelectionController
+
+GameplayController --> GameLogic
+PlayerShipPlacementController --> Board
+SettingsController --> GameState
+MenuBarController --> GameState
+@enduml

@@ -16,7 +16,7 @@ import scalafx.stage.Modality.ApplicationModal
 import scalafx.stage.{Screen, Stage}
 import scalafx.scene.transform.Scale
 
-object Battleship extends JFXApp3:
+object BattleshipGame extends JFXApp3:
 
   var roots: Option[sfxs.layout.BorderPane] = None
   var mediaPlayer: MediaPlayer = null

@@ -1,6 +1,6 @@
 package com.zmletters.battleship.controller
 
-import com.zmletters.battleship.Battleship.mediaPlayer
+import com.zmletters.battleship.BattleshipGame.mediaPlayer
 import com.zmletters.battleship.game.GameState
 
 import javafx.event.ActionEvent

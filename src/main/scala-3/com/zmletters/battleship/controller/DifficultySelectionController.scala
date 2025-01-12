@@ -1,6 +1,6 @@
 package com.zmletters.battleship.controller
 
-import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.BattleshipGame
 import com.zmletters.battleship.game.{AIDifficulty, GameState, HardAI, NormalAI}
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
@@ -11,13 +11,13 @@ class DifficultySelectionController:
   def handleNormalAI(actionEvent: ActionEvent): Unit =
 
     GameState.difficulty = new NormalAI
-    Battleship.showPlayerShipPlacement()
+    BattleshipGame.showPlayerShipPlacement()
 
   def handleHardAI(actionEvent: ActionEvent): Unit =
 
     GameState.difficulty = new HardAI
-    Battleship.showPlayerShipPlacement()
+    BattleshipGame.showPlayerShipPlacement()
 
   def handleBackButton(actionEvent: ActionEvent): Unit =
 
-    val backClicked = Battleship.showMenu()
+    val backClicked = BattleshipGame.showMenu()

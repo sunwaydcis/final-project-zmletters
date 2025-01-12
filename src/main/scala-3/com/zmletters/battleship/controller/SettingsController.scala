@@ -1,6 +1,6 @@
 package com.zmletters.battleship.controller
 
-import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.BattleshipGame
 import com.zmletters.battleship.game.GameState
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
@@ -30,7 +30,7 @@ class SettingsController:
 
   def handleDoneButton(actionEvent: ActionEvent): Unit =
     GameState.globalVolume = volumeSlider.getValue/100
-    val clicked = Battleship.showMenu()
+    val clicked = BattleshipGame.showMenu()
 
   def handleBackButton(actionEvent: ActionEvent): Unit =
-    val backClicked = Battleship.showMenu()
+    val backClicked = BattleshipGame.showMenu()

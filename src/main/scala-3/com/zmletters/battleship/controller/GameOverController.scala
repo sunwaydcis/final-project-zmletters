@@ -1,6 +1,6 @@
 package com.zmletters.battleship.controller
 
-import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.BattleshipGame
 import com.zmletters.battleship.game.{GameLogic, GameState}
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
@@ -17,10 +17,10 @@ class GameOverController:
     GameState.gameOverText = ""
 
   def handlePlayAgain(action: ActionEvent) =
-    val startClicked = Battleship.showDifficultySelection()
+    val startClicked = BattleshipGame.showDifficultySelection()
 
   def handleMenu(actionEvent: ActionEvent) =
-    val menuClicked = Battleship.showMenu()
+    val menuClicked = BattleshipGame.showMenu()
 
   def handleQuit(action: ActionEvent) =
     Platform.exit()

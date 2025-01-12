@@ -1,6 +1,6 @@
 package com.zmletters.battleship.controller
 
-import com.zmletters.battleship.Battleship
+import com.zmletters.battleship.BattleshipGame
 import com.zmletters.battleship.game.GameState
 import javafx.fxml.FXML
 import javafx.event.ActionEvent
@@ -204,10 +204,10 @@ class PlayerShipPlacementController:
       }
 
       GameState.playerBoard = playerBoard
-      Battleship.showGameplay()
+      BattleshipGame.showGameplay()
     else
       println("Some ships are still unplaced.")
       dialogText.setText("Please place all ships before starting the game.")
 
   def handleBackButton(actionEvent: ActionEvent) =
-    val backClicked = Battleship.showDifficultySelection()
+    val backClicked = BattleshipGame.showDifficultySelection()
