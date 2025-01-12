@@ -95,7 +95,7 @@
          <font>
             <Font size="20.0" />
          </font></Label>
-      <Label fx:id="rotationText" layoutX="614.0" layoutY="550.0" prefHeight="30.0" prefWidth="303.0" text="Current Rotation: ">
+      <Label fx:id="rotationText" layoutX="614.0" layoutY="550.0" prefHeight="30.0" prefWidth="303.0" text="Current Rotation: Horizontal">
          <font>
             <Font size="20.0" />
          </font>

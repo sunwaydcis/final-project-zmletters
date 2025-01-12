@@ -77,7 +77,7 @@ class PlayerShipPlacementController:
     placementRoot.requestFocus()
 
     // Dialog to welcome
-    dialogText.setText("Welcome to the game!")
+    dialogText.setText("Welcome to the game! Please select the ships to place.")
 
   // https://stackoverflow.com/questions/57515339/javafx-how-to-locate-a-specific-button-in-a-gridpane reference for getting location of the button
   private def getButtonAt(row: Int, col: Int): Button = buttonGrid(row)(col)
