@@ -84,7 +84,7 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label fx:id="playerDialog" alignment="TOP_LEFT" layoutX="950.0" layoutY="595.0" prefHeight="54.0" prefWidth="292.0" style="-fx-wrap-text: true;" text="Let's GO!" textAlignment="JUSTIFY">
+      <Label fx:id="playerDialog" alignment="TOP_LEFT" layoutX="950.0" layoutY="595.0" prefHeight="54.0" prefWidth="292.0" style="-fx-wrap-text: true;" text="Let's GO! Your turn." textAlignment="JUSTIFY">
          <font>
             <Font size="18.0" />
          </font>

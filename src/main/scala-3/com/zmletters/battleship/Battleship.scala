@@ -1,6 +1,6 @@
 package com.zmletters.battleship
 
-import com.zmletters.battleship.controller.{GameplayController, PlayerShipPlacementController, SettingsController}
+import com.zmletters.battleship.controller.{GameplayController, MenuBarController, PlayerShipPlacementController, SettingsController}
 import com.zmletters.battleship.game.GameState
 import javafx.fxml.FXMLLoader
 import scalafx.application.JFXApp3
@@ -24,6 +24,7 @@ object Battleship extends JFXApp3:
   override def start(): Unit =
     val rootResource = getClass.getResource("view/RootLayout.fxml")
     val loader = new FXMLLoader(rootResource)
+    val controller = loader.getController[MenuBarController]
     loader.load()
 
     roots = Option(loader.getRoot[jfxs.layout.BorderPane])
