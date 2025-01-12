@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="GameplayRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zmletters.battleship.controller.GameplayController">
    <children>
@@ -16,9 +18,9 @@
             <Image url="@../img/Battleship_BG_0.PNG" />
          </image>
       </ImageView>
-      <ImageView fitHeight="695.0" fitWidth="420.0" layoutX="971.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="695.0" fitWidth="340.0" layoutX="926.0" layoutY="341.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../img/Battleship_Character_1.PNG" />
+            <Image url="@../img/Battleship_Character_1_BOXED.png" />
          </image>
       </ImageView>
       <GridPane fx:id="enemyGrid" gridLinesVisible="true" layoutX="75.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" stylesheets="@../css/BoardLayout.css" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="98.0">
@@ -47,7 +49,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label fx:id="dialogText" layoutX="927.0" layoutY="47.0" text="Label" />
       <GridPane fx:id="playerGrid" gridLinesVisible="true" layoutX="638.0" layoutY="98.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="265.0" prefWidth="265.0" stylesheets="@../css/BoardLayout.css">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
@@ -74,12 +75,29 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <VBox layoutX="698.0" layoutY="398.0" prefHeight="200.0" prefWidth="100.0" />
-      <ImageView fitHeight="695.0" fitWidth="340.0" layoutX="955.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="695.0" fitWidth="340.0" layoutX="926.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../img/Battleship_Character_2_cropped.PNG" />
+            <Image url="@../img/Battleship_Character_2_BOXED.png" />
          </image>
       </ImageView>
-      <Label layoutX="626.0" layoutY="39.0" text="Label" />
+      <Label fx:id="enemyDialog" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="950.0" layoutY="276.0" prefHeight="54.0" prefWidth="292.0" style="-fx-wrap-text: true;" text="Are you ready?" textAlignment="JUSTIFY">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Label fx:id="playerDialog" alignment="TOP_LEFT" layoutX="950.0" layoutY="595.0" prefHeight="54.0" prefWidth="292.0" style="-fx-wrap-text: true;" text="Let's GO!" textAlignment="JUSTIFY">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="backBtn" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/DifficultySelection.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Buttons/BTN_HORIZ_SINGLE%20(15).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Pane fx:id="blockPane" disable="true" layoutX="59.0" layoutY="85.0" prefHeight="554.0" prefWidth="545.0" />
    </children>
 </AnchorPane>

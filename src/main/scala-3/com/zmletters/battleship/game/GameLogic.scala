@@ -11,7 +11,7 @@ class GameLogic(board1: Board, board2: Board, ai: AIDifficulty):
   def playerAttack(x: Int, y: Int): String =
     val result = board2.attack(x, y)
     if (board2.checkAllSunk) {
-      "Player 1 wins!"
+      s"Player wins!"
     } else {
       currentPlayer = "AI"
       result
@@ -30,3 +30,9 @@ class GameLogic(board1: Board, board2: Board, ai: AIDifficulty):
 
   def isGameOver: Boolean =
     board1.checkAllSunk || board2.checkAllSunk
+
+  def board1Sunk: Boolean =
+    board1.checkAllSunk
+
+  def board2Sunk: Boolean =
+    board2.checkAllSunk

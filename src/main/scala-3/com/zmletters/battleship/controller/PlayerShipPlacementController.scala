@@ -29,12 +29,18 @@ class PlayerShipPlacementController:
   @FXML private var carrierButton: Button = null
   @FXML private var submarineButton: Button = null
   @FXML private var destroyerButton: Button = null
+  @FXML private var battleshipButton: Button = null
   @FXML private var boatButton: Button = null
   @FXML private var dialogText: Label = null
+  @FXML private var rotationText: Label = null
+  @FXML private var startGameButton: Button = null
 
   var gridDisabled: Boolean = true
 
   def initialize(): Unit =
+
+    // disable game start button
+    startGameButton.setDisable(true)
 
     // Setting up the grid 10 x 10
     for (x <- 0 until 10; y <- 0 until 10) {
@@ -57,10 +63,12 @@ class PlayerShipPlacementController:
     placementRoot.setOnKeyPressed(event => {
       if event.getCode.getName == "R" then
         if currentDirection == "Right" then
+          rotationText.setText("Current Rotation: Vertical")
           currentDirection = "Down"
           dialogText.setText("Ship direction set to Vertical.")
           println("Ship direction set to Down.")
         else
+          rotationText.setText("Current Rotation: Horizontal")
           currentDirection = "Right"
           dialogText.setText("Ship direction set to Horizontal.")
           println("Ship direction set to Right.")
@@ -100,6 +108,8 @@ class PlayerShipPlacementController:
       if (playerBoard.isPlacementValid(positions)) {
         playerBoard.placeShip(ship, start)
         btn.setStyle("-fx-background-color: green")
+
+        // Update button to reflect placement
         positions.foreach { case (px, py) =>
           println(s"Getting button positions... at $px, $py")
           val btn1: Button = getButtonAt(px, py)
@@ -111,6 +121,16 @@ class PlayerShipPlacementController:
             println(s"Button not found at position $px, $py.")
           }
         }
+        disableShipButton(ship.name)
+
+        // if all ship has been place
+        if (playerBoard.shipList.size == playerShips.size) {
+          startGameButton.setDisable(false) // Enable the Start Game button
+          dialogText.setText("All ships placed! Click 'Start Game' to begin.")
+        } else {
+          dialogText.setText(s"${ship.name} placed! Place the remaining ships.")
+        }
+
       } else {
         println("Invalid ship placement.")
         dialogText.setText("Invalid ship placement. Please reselect the ship.")
@@ -123,58 +143,75 @@ class PlayerShipPlacementController:
   private def isShipTypeAlreadyPlaced(shipType: String): Boolean =
     playerBoard.shipList.exists(_.name == shipType)
 
+  private def disableShipButton(shipName: String): Unit =
+    shipName match
+      case "Carrier" => carrierButton.setDisable(true)
+      case "Battleship" => battleshipButton.setDisable(true)
+      case "Destroyer" => destroyerButton.setDisable(true)
+      case "Submarine" => submarineButton.setDisable(true)
+      case "Boat" => boatButton.setDisable(true)
+      case _ => println(s"No button found for $shipName.")
+
   def handleAddCarrier(action: ActionEvent) =
-    if (!isShipTypeAlreadyPlaced("Carrier")) {
+    if !isShipTypeAlreadyPlaced("Carrier") then
       currentShip = Some(new Carrier)
       println("Carrier selected.")
-      dialogText.setText("Carrier selected.")
+      dialogText.setText("Carrier selected. 5 Tiles.")
 //      carrierButton.setDisable(true) // Disable the button once selected
-    } else {
+    else
       dialogText.setText("Carrier has already been placed.")
-    }
+
+  def handleAddBattleship(action: ActionEvent) =
+    if !isShipTypeAlreadyPlaced("Battleship") then
+      currentShip = Some(new Battleship)
+      println("Battleship selected.")
+      dialogText.setText("Battleship selected. 4 Tiles.")
+      //      carrierButton.setDisable(true) // Disable the button once selected
+    else
+      dialogText.setText("Battleship has already been placed.")
+
 
   def handleAddDestroyer(action: ActionEvent) =
-    if (!isShipTypeAlreadyPlaced("Destroyer")) {
+    if !isShipTypeAlreadyPlaced("Destroyer") then
       currentShip = Some(new Destroyer)
       println("Destroyer selected.")
-      dialogText.setText("Destroyer selected.")
-    } else {
+      dialogText.setText("Destroyer selected. 3 Tiles.")
+    else
       dialogText.setText("Destroyer has already been placed.")
-    }
+
 
 
   def handleAddBoat(action: ActionEvent) =
-    if (!isShipTypeAlreadyPlaced("Boat")) {
+    if !isShipTypeAlreadyPlaced("Boat") then
       currentShip = Some(new Boat)
       println("Boat selected.")
-      dialogText.setText("Boat selected.")
-    } else {
+      dialogText.setText("Boat selected. 2 Tiles.")
+    else
       dialogText.setText("Boat has already been placed.")
-    }
+
 
   def handleAddSubmarine(action: ActionEvent) =
-    if (!isShipTypeAlreadyPlaced("Submarine")) {
+    if !isShipTypeAlreadyPlaced("Submarine") then
       currentShip = Some(new Submarine)
-      println("Submarine selected.")
+      println("Submarine selected. 3 Tiles")
       dialogText.setText("Submarine selected.")
-    } else {
+    else
       dialogText.setText("Submarine has already been placed.")
-    }
 
   def handleStartGame(action: ActionEvent): Unit =
-    if (playerBoard.shipList.nonEmpty) {
+    if playerBoard.shipList.size == playerShips.size then
+      println("All ships placed. Starting the game...")
       println("List of placed ships and their positions:")
       playerBoard.shipList.foreach { ship =>
         val positions = ship.position
         println(s"${ship.name}: ${positions.mkString(", ")}")
       }
 
-      // Store the playerBoard in GameState
       GameState.playerBoard = playerBoard
-      //GameState.currentPlayer = "You"
-      // Transition to the next scene
       Battleship.showGameplay()
-    } else {
-      println("No ships have been placed yet.")
+    else
+      println("Some ships are still unplaced.")
       dialogText.setText("Please place all ships before starting the game.")
-    }
+
+  def handleBackButton(actionEvent: ActionEvent) =
+    val backClicked = Battleship.showDifficultySelection()

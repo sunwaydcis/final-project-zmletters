@@ -2,9 +2,13 @@ package com.zmletters.battleship.controller
 
 import com.zmletters.battleship.game.*
 import com.zmletters.battleship.model.*
+import com.zmletters.battleship.Battleship
+import javafx.animation.PauseTransition
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, Label}
-import javafx.scene.layout.GridPane
+import javafx.scene.layout.{GridPane, Pane}
+import javafx.event.ActionEvent
+import javafx.util.Duration
 
 import scala.util.Random
 
@@ -13,6 +17,9 @@ class GameplayController:
 
   @FXML private var enemyGrid: GridPane = null
   @FXML private var playerGrid: GridPane = null
+  @FXML private var enemyDialog: Label = null
+  @FXML private var playerDialog: Label = null
+  @FXML private var blockPane: Pane = null
 
   private var gameLogic: GameLogic = null
   private var playerBoard: Board = null
@@ -91,30 +98,38 @@ class GameplayController:
 
   private def handleGridClick(btn: Button, x: Int, y: Int): Unit =
     println(s"Player attacked enemy at $x, $y")
-    //btn.setText("Hit or Miss")
+
+    // make pane block clicking during ai turn
+    blockPane.setDisable(false)
+    blockPane.setVisible(true)
 
     val result = gameLogic.playerAttack(x, y)
     btn.setDisable(true)
 
     // Update button based on result
-    result match {
+    result match
       case "Hit" =>
         btn.setStyle("-fx-background-color: red;")
         btn.setText("Hit")
+        playerDialog.setText("That's a Hit!")
       case "Miss" =>
         btn.setStyle("-fx-background-color: gray;")
         btn.setText("Miss")
+        playerDialog.setText("That's a Missed!")
       case "Hit and Sunk" =>
         btn.setStyle("-fx-background-color: red;")
-        btn.setText("Hit and Sunk")
-      case "Player 1 wins!" =>
+        btn.setText("Hit")
+        playerDialog.setText("Ship SUNK! Let's GO!")
+      case "Player wins!" =>
         btn.setStyle("-fx-background-color: red;")
         btn.setText("Hit")
+        playerDialog.setText("Well done Captain! You won!")
+        GameState.gameOverText = "You win!"
+        transitionNextScene()
         //statusLabel.setText("Game Over! Player 1 wins!")
       case _ =>
         println(s"Unexpected result: $result")
         //statusLabel.setText("Error occurred during attack.")
-    }
 
 
     // If game is not over, proceed to AI's turn
@@ -123,28 +138,77 @@ class GameplayController:
     }
 
   private def handleAiTurn(): Unit =
-    val (x, y, result) = gameLogic.aiAttack
-    println(s"AI attacked ($x, $y): $result")
+    // Pause for 1 second
+    val pause = new PauseTransition(Duration.seconds(1))
 
-    // Update the player grid based on AI's attack
-    val index = x * 10 + y
-    val cell = playerGridCells(index)
+    pause.setOnFinished(_=> {
+      val (x, y, result) = gameLogic.aiAttack
+      println(s"AI attacked ($x, $y): $result")
 
-    result match {
-      case "Hit" =>
-        cell.setStyle("-fx-background-color: red;")
-        cell.setText("Hit")
-      case "Miss" =>
-        cell.setStyle("-fx-background-color: gray;")
-        cell.setText("Miss")
-      case "Hit and Sunk" =>
-        cell.setStyle("-fx-background-color: red;")
-        cell.setText("Hit and Sunk")
-      case "Player 2 wins!" =>
-        cell.setStyle("-fx-background-color: red;")
-        cell.setText("Hit")
+      // Update the player grid based on AI's attack
+      val index = x * 10 + y
+      val cell = playerGridCells(index)
+
+      result match
+        case "Hit" =>
+          cell.setStyle("-fx-background-color: red;")
+          cell.setText("Hit")
+          enemyDialog.setText("Heh heh.")
+          playerDialog.setText("Oh no!")
+        case "Miss" =>
+          cell.setStyle("-fx-background-color: gray;")
+          cell.setText("Miss")
+          enemyDialog.setText("You won't get away with this!")
+        case "Hit and Sunk" =>
+          cell.setStyle("-fx-background-color: red;")
+          cell.setText("Hit")
+          enemyDialog.setText("I am winning!!!")
+          playerDialog.setText("Brace yourself captain!")
+        case "Enemy wins!" =>
+          cell.setStyle("-fx-background-color: red;")
+          cell.setText("Hit")
+          GameState.gameOverText = "You lost!"
+          enemyDialog.setText("I guess I am the superior ones after all.")
+          playerDialog.setText("You lost... Better luck next time...")
+          transitionNextScene()
         //statusLabel.setText("Game Over! AI wins!")
-      case _ =>
-        println(s"Unexpected result: $result")
-        //statusLabel.setText("Error occurred during AI attack.")
+        case _ =>
+          println(s"Unexpected result: $result")
+      //statusLabel.setText("Error occurred during AI attack.")
+
+      // Enable interactions after AI finishes turn
+      if (!gameLogic.isGameOver) {
+        blockPane.setDisable(true)
+        blockPane.setVisible(false)
+      }
+
+    })
+
+    pause.play()
+
+  private def transitionNextScene(): Unit =
+    println("Transitioning ot next scene.")
+
+    // Disable all grid buttons
+    disableAllGridButtons()
+
+    val pause = new PauseTransition(Duration.seconds(2))
+    pause.setOnFinished(_ => {
+      // Call your scene transition method here
+      Battleship.showGameOver()
+    })
+    pause.play()
+
+  private def disableAllGridButtons(): Unit =
+    // Disable all buttons in the enemy grid
+    buttonGrid.flatten.foreach { btn =>
+      if (btn != null) btn.setDisable(true)
     }
+
+    // Disable player grid cells (if required)
+    playerGridCells.foreach { cell =>
+      if (cell != null) cell.setDisable(true) // Assuming Label supports disabling
+    }
+
+  def handleBackButton(actionEvent: ActionEvent): Unit =
+    val backClicked = Battleship.showDifficultySelection()

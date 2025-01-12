@@ -9,9 +9,13 @@ import javafx.application.Platform
 class MenuController:
 
   def handleStart(action: ActionEvent) =
-    //val startClicked = Battleship.showPlayerShipPlacement()
+
     val startClicked = Battleship.showDifficultySelection()
 
+  def handleSettings(action: ActionEvent) =
+
+    val clicked = Battleship.showSettings()
+
   def handleQuit(action: ActionEvent) =
+
     Platform.exit()
-//    System.exit(0)

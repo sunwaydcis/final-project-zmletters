@@ -9,20 +9,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zmletters.battleship.controller.DifficultySelectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1280.0" stylesheets="@../css/DifficultySelection.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zmletters.battleship.controller.DifficultySelectionController">
    <children>
       <ImageView fitHeight="695.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/Battleship_BG_0.PNG" />
          </image>
       </ImageView>
-      <VBox layoutX="503.0" layoutY="286.0" prefHeight="241.0" prefWidth="275.0" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="502.0">
+      <VBox alignment="CENTER" layoutX="476.0" layoutY="219.0" prefHeight="308.0" prefWidth="329.0" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="475.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleEasyAI" prefHeight="40.0" prefWidth="275.0" text="Easy" />
             <Pane prefHeight="40.0" prefWidth="275.0" />
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="275.0" text="Normal" />
+            <Button mnemonicParsing="false" onAction="#handleNormalAI" prefHeight="86.0" prefWidth="236.0" styleClass="difficultySelection" text="Normal" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
             <Pane prefHeight="40.0" prefWidth="275.0" />
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="275.0" text="Hard" />
+            <Button mnemonicParsing="false" onAction="#handleHardAI" prefHeight="86.0" prefWidth="236.0" styleClass="difficultySelection" text="Hard" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
          </children>
       </VBox>
       <Text layoutX="391.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Battleship" textAlignment="CENTER" wrappingWidth="499.13671875">
@@ -30,7 +35,7 @@
             <Font name="Bauhaus 93" size="57.0" />
          </font>
       </Text>
-      <Button fx:id="backBtn" layoutX="57.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/DifficultySelection.css" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0">
+      <Button fx:id="backBtn" layoutX="57.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/DifficultySelection.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
          <graphic>
             <ImageView fitHeight="70.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                <image>

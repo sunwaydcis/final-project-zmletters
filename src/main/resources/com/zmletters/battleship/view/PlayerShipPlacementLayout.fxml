@@ -9,8 +9,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="placementRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zmletters.battleship.controller.PlayerShipPlacementController">
+<AnchorPane fx:id="placementRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="1280.0" stylesheets="@../css/PlayerShipPlacement.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zmletters.battleship.controller.PlayerShipPlacementController">
    <children>
       <ImageView fitHeight="695.0" fitWidth="1280.0" layoutX="-13.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -48,15 +50,55 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Pane layoutX="597.0" layoutY="481.0" prefHeight="200.0" prefWidth="398.0">
+      <Button fx:id="startGameButton" layoutX="977.0" layoutY="565.0" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="90.0" prefWidth="252.0" styleClass="startBtn" text="Start Game" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <VBox layoutX="630.0" layoutY="180.0" prefHeight="312.0" prefWidth="122.0">
          <children>
-            <Button fx:id="carrierButton" layoutX="51.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleAddCarrier" prefHeight="39.0" prefWidth="93.0" text="Carrier" />
-            <Button fx:id="destroyerButton" layoutX="51.0" layoutY="81.0" mnemonicParsing="false" onAction="#handleAddDestroyer" prefHeight="39.0" prefWidth="93.0" text="Destroyer" />
-            <Button fx:id="boatButton" layoutX="166.0" layoutY="29.0" mnemonicParsing="false" onAction="#handleAddBoat" prefHeight="39.0" prefWidth="93.0" text="Boat" />
-            <Button fx:id="submarineButton" layoutX="166.0" layoutY="81.0" mnemonicParsing="false" onAction="#handleAddSubmarine" prefHeight="39.0" prefWidth="93.0" text="Submarine" />
+            <Button fx:id="carrierButton" mnemonicParsing="false" onAction="#handleAddCarrier" prefHeight="42.0" prefWidth="118.0" styleClass="shipBtn" text="Carrier" textFill="WHITE" />
+            <Pane prefHeight="25.0" prefWidth="122.0" />
+            <Button fx:id="battleshipButton" mnemonicParsing="false" onAction="#handleAddBattleship" prefHeight="42.0" prefWidth="118.0" styleClass="shipBtn" text="Battleship" textFill="WHITE" />
+            <Pane prefHeight="25.0" prefWidth="122.0" />
+            <Button fx:id="destroyerButton" mnemonicParsing="false" onAction="#handleAddDestroyer" prefHeight="42.0" prefWidth="118.0" styleClass="shipBtn" text="Destroyer" textFill="WHITE" />
+            <Pane prefHeight="25.0" prefWidth="122.0" />
+            <Button fx:id="submarineButton" mnemonicParsing="false" onAction="#handleAddSubmarine" prefHeight="42.0" prefWidth="118.0" styleClass="shipBtn" text="Submarine" textFill="WHITE" />
+            <Pane prefHeight="25.0" prefWidth="122.0" />
+            <Button fx:id="boatButton" mnemonicParsing="false" onAction="#handleAddBoat" prefHeight="42.0" prefWidth="118.0" styleClass="shipBtn" text="Boat" textFill="WHITE" />
          </children>
-      </Pane>
-      <Button layoutX="944.0" layoutY="553.0" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="90.0" prefWidth="224.0" text="Start Game" />
-      <Label fx:id="dialogText" layoutX="796.0" layoutY="139.0" text="Label" />
+      </VBox>
+      <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBackButton" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/DifficultySelection.css" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <graphic>
+            <ImageView fitHeight="70.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/Buttons/BTN_HORIZ_SINGLE%20(15).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="86.0" fitWidth="321.0" layoutX="605.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/dialogBox.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="614.0" layoutY="514.0" text="Press &quot;R&quot; to rotate.">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="127.0" fitWidth="417.0" layoutX="605.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/dialogBox.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="dialogText" alignment="TOP_LEFT" layoutX="611.0" layoutY="73.0" prefHeight="79.0" prefWidth="407.0" style="-fx-wrap-text: true;" text="Label" textAlignment="JUSTIFY">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="rotationText" layoutX="614.0" layoutY="550.0" prefHeight="30.0" prefWidth="303.0" text="Current Rotation: ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

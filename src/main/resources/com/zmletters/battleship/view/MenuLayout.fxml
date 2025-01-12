@@ -16,12 +16,18 @@
             <Image url="@../img/Battleship_BG_0.PNG" />
          </image>
       </ImageView>
-      <VBox alignment="TOP_CENTER" layoutX="503.0" layoutY="286.0" prefHeight="241.0" prefWidth="275.0" AnchorPane.bottomAnchor="168.0" AnchorPane.rightAnchor="502.0">
+      <VBox alignment="TOP_CENTER" layoutX="503.0" layoutY="286.0" prefHeight="323.0" prefWidth="275.0" AnchorPane.bottomAnchor="86.0" AnchorPane.rightAnchor="502.0">
          <children>
             <Button mnemonicParsing="false" onAction="#handleStart" prefHeight="80.0" prefWidth="220.0" styleClass="play" text="Play" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font></Button>
+            <Pane prefHeight="40.0" prefWidth="275.0" />
+            <Button mnemonicParsing="false" onAction="#handleSettings" prefHeight="80.0" prefWidth="220.0" styleClass="play" text="Option" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
             <Pane prefHeight="40.0" prefWidth="275.0" />
             <Button mnemonicParsing="false" onAction="#handleQuit" prefHeight="80.0" prefWidth="220.0" styleClass="quit-btn" text="Quit">
                <font>

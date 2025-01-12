@@ -1,0 +1,18 @@
+.shipBtn {
+    -fx-background-image: url("../img/Buttons/BTN_BLUE_RECT_IN.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+
+}
+
+.startBtn {
+    -fx-background-image: url("../img/Buttons/BTN_GREEN_RECT_IN.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}

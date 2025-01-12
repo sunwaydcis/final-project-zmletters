@@ -58,13 +58,3 @@ class Submarine extends Ship("Submarine", 3)
 class Boat extends Ship("Boat", 2)
 
 
-
-object ShipText extends App:
-  val destroyer = new Carrier
-
-  println("place ship")
-//  destroyer.place(List((0, 0), (0, 1), (0, 2)))
-//
-//  println(destroyer)
-//
-//  println(s"Hit (0, 1): ${destroyer.takeHit((0,1))}")
